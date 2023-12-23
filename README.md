@@ -14,19 +14,13 @@ for d in os.listdir(path):
 
 ## Multi-line Visualization
 ```
-fig,axs = plt.subplots(2,3, figsize=(20,50))
+fig,axs = plt.subplots(2,3, figsize=(20,5))
 
-img = io.imread(mri_df.image_path[i])
-axs[count][0].title.set_text("Brain MRI")
-axs[count][0].imshow(img)
+axs[0][0].title.set_text("image1")
+axs[0][0].imshow(img)
 
-mask = io.imread(mri_df.mask_path[i])
-axs[count][1].title.set_text("Mask")
-axs[count][1].imshow(mask, cmap='gray')
-
-img[mask==255] = (0,255,150)
-axs[count][2].title.set_text("MRI with Mask")
-axs[count][2].imshow(img)
+axs[1][1].title.set_text("image2")
+axs[1][1].imshow(mask, cmap='gray')
 
 fig.tight_layout()
 ```
