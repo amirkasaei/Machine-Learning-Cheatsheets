@@ -28,7 +28,7 @@ fig.tight_layout()
 
 ## train one epoch
 ```
-def train_one_epoch(model, loader, criterion, optimizer, scheduler, device, phase):
+def one_epoch(model, loader, criterion, optimizer, scheduler, device, phase):
 
   model.train()  # Set model to training mode
 
@@ -84,7 +84,7 @@ def train(model, loaders, criterion, optimizer, num_epochs, device, scheduler=No
   accuracy_dic['train'], accuracy_dic['validation'] = [], []
 
   for epoch in range(num_epochs):
-      train_loss, train_acc, train_precision, train_recall, train_f1 = train_one_epoch(model, loaders['train'], criterion, optimizer, scheduler, device, phase='train' )
+      train_loss, train_acc, train_precision, train_recall, train_f1 = one_epoch(model, loaders['train'], criterion, optimizer, scheduler, device, phase='train' )
       val_loss, val_acc, val_precision, val_recall, val_f1 = one_epoch(model, loaders['validation'], criterion, optimizer, scheduler, device, phase='validation')
 
       loss_dic['train'].append(train_loss)
