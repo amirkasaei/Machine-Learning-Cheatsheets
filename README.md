@@ -12,6 +12,17 @@ for d in os.listdir(path):
   pass
 ```
 
+## Plot
+```
+def show_plots(num_epochs, data, metric):
+  e = np.arange(num_epochs)
+  plt.plot(e, data['train'], label='train '+metric)
+  plt.plot(e, data['valid'], label='validation '+metric)
+  plt.xlabel('epoch')
+  plt.ylabel(metric)
+  plt.legend()
+```
+
 ## Multi-line Visualization
 ```
 fig,axs = plt.subplots(2,3, figsize=(20,5))
