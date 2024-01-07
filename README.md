@@ -116,3 +116,39 @@ def train(model, loaders, criterion, optimizer, num_epochs, device, scheduler=No
 
   return loss_dic, accuracy_dic
 ```
+
+## Confusion Matrix
+```
+def plot_confusionmatrix(y_train_pred,y_train, classes):
+  print('Confusion matrix')
+  cf = sklearn.metrics.confusion_matrix(y_train_pred,y_train)
+  sns.heatmap(cf,annot=True,yticklabels=classes, xticklabels=classes, cmap='Blues', fmt='g')
+  plt.tight_layout()
+  plt.show()
+```
+```
+classes = ['not cancerous', 'cancerous']
+
+def report(model, loader, device, classes):
+
+  # Each epoch has a training and validation phase
+  model.eval()   # Set model to evaluate mode
+
+  y_pred = []
+  y_true = []
+
+  # Iterate over data.
+  for inputs, labels in loader:
+    inputs = inputs.to(device)
+    labels = labels.type(torch.LongTensor)
+
+    # forward
+    # track history if only in train
+    with torch.set_grad_enabled(False):
+      outputs = model(inputs)
+      _, preds = torch.max(outputs, 1)
+      y_pred.extend(preds.cpu())
+      y_true.extend(labels)
+
+  plot_confusionmatrix(y_pred, y_true, classes)
+```
