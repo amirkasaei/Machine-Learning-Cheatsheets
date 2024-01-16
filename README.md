@@ -36,6 +36,21 @@ axs[1][1].imshow(mask, cmap='gray')
 fig.tight_layout()
 ```
 
+```
+fig,axs = plt.subplots(2,5, figsize=(15,7))
+idx=0
+
+for i, ax in enumerate(axs.flatten()):
+  sample = train_dataset[indicies[idx]]
+  ax.imshow(vis)
+  ax.axis("off")
+  ax.title.set_text(label[sample[1]])
+  idx += 1
+
+plt.tight_layout()
+plt.show()
+```
+
 
 ## train one epoch
 ```
