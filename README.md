@@ -50,7 +50,27 @@ for i, ax in enumerate(axs.flatten()):
 plt.tight_layout()
 plt.show()
 ```
+## Custom Pytorch Dataset
+```
+class Dataset(Dataset):
+    def __init__(self, df, transform=None):
+        self.dataframe = df
+        self.trasnform = transform
 
+    def __len__(self):
+        return len(self.samples)
+
+    def __getitem__(self, index):
+
+        image_path, label = self.dataframe[['image_path', 'label']].iloc[index]
+
+
+        # patch extraction
+        image = cv2.imread(image_path)
+        image = self.trasnform(image)
+
+        return image, label
+```
 
 ## train one epoch
 ```
