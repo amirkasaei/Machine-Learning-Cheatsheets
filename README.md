@@ -251,11 +251,11 @@ fig,axs = plt.subplots(2,5, figsize=(15,7))
 idx=0
 
 for i, ax in enumerate(axs.flatten()):
-  sample = datasets['train'][indicies[idx]]
-  grayscale_cam, vis = plot_GradCam(model, sample[0])
+  image, label = datasets['train'][indicies[idx]]
+  grayscale_cam, vis = plot_GradCam(model, image)
   ax.imshow(vis)
   ax.axis("off")
-  ax.title.set_text(classes[sample[1]])
+  ax.title.set_text(classes[label])
   idx += 1
 
 plt.tight_layout()
