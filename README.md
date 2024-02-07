@@ -200,3 +200,64 @@ def report(model, loader, device, classes):
 
   plot_confusionmatrix(y_pred, y_true, classes)
 ```
+
+## Interpretability (GradCam)
+```
+from pytorch_grad_cam import GradCAM, HiResCAM, ScoreCAM, GradCAMPlusPlus, AblationCAM, XGradCAM, EigenCAM, FullGrad
+from pytorch_grad_cam.utils.model_targets import ClassifierOutputTarget
+from pytorch_grad_cam.utils.image import show_cam_on_image
+from torchvision.transforms.functional import to_pil_image
+
+
+def plot_GradCam(model, image):
+    target_layers = [model.layer4[-1]]
+    input_tensor = torch.unsqueeze(image, dim=0)
+    # Note: input_tensor can be a batch tensor with several images!
+
+    # Construct the CAM object once, and then re-use it on many images:
+    cam = GradCAM(model=model, target_layers=target_layers)
+
+    # You can also use it within a with statement, to make sure it is freed,
+    # In case you need to re-create it inside an outer loop:
+    # with GradCAM(model=model, target_layers=target_layers, use_cuda=args.use_cuda) as cam:
+    #   ...
+
+    # We have to specify the target we want to generate
+    # the Class Activation Maps for.
+    # If targets is None, the highest scoring category
+    # will be used for every image in the batch.
+    # Here we use ClassifierOutputTarget, but you can define your own custom targets
+    # That are, for example, combinations of categories, or specific outputs in a non standard model.
+
+    targets = [ClassifierOutputTarget(1)] # one class
+
+    # You can also pass aug_smooth=True and eigen_smooth=True, to apply smoothing.
+    grayscale_cam = cam(input_tensor=input_tensor, targets=targets)
+
+    # In this example grayscale_cam has only one image in the batch:
+    img = np.array(to_pil_image(image))/255
+
+    grayscale_cam = grayscale_cam[0, :]
+    visualization = show_cam_on_image(img, grayscale_cam, use_rgb=True)
+
+    return grayscale_cam, visualization
+```
+```
+k=10
+indicies = np.random.choice(len(datasets['train']), k)
+np.random.shuffle(indicies)
+
+fig,axs = plt.subplots(2,5, figsize=(15,7))
+idx=0
+
+for i, ax in enumerate(axs.flatten()):
+  sample = datasets['train'][indicies[idx]]
+  grayscale_cam, vis = plot_GradCam(model, sample[0])
+  ax.imshow(vis)
+  ax.axis("off")
+  ax.title.set_text(classes[sample[1]])
+  idx += 1
+
+plt.tight_layout()
+plt.show()
+```
