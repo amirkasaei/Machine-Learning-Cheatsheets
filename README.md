@@ -76,7 +76,10 @@ class Dataset(Dataset):
 ```
 def one_epoch(model, loader, criterion, optimizer, scheduler, device, phase):
 
-  model.train()  # Set model to training mode
+  if phase == 'train':
+    model.train() # Set model to training mode
+  else:
+    model.eval()
 
   running_loss = 0.0
   running_accuracy = 0.0
@@ -109,7 +112,7 @@ def one_epoch(model, loader, criterion, optimizer, scheduler, device, phase):
     running_recall += sklearn.metrics.recall_score(labels.cpu(), preds.cpu(), average='weighted', zero_division=0)
     running_f1_score += sklearn.metrics.f1_score(labels.cpu(), preds.cpu(), average='weighted', zero_division=0)
 
-    # if phase == 'train' and not scheduler:
+    # if phase == 'train' and scheduler:
     #     scheduler.step()
 
   loss = running_loss / len(loader)
@@ -139,6 +142,12 @@ def train(model, loaders, criterion, optimizer, num_epochs, device, scheduler=No
       accuracy_dic['validation'].append(val_acc)
 
       wandb.log({"Train Loss": train_loss, "Train Accuracy":train_acc, "Validation Loss": val_loss, "Validation Accuracy":val_acc})
+
+      if valid_loss < best_valid_loss:
+        best_valid_acc = valid_acc
+        best_valid_loss = valid_loss
+        # best_model = model.state_dict()
+        torch.save(model.state_dict(), model_path)
 
       print(f'Epoch [{epoch+1}/{num_epochs}] - '
             f'Train Loss: {train_loss:.4f} - '
