@@ -128,6 +128,10 @@ def one_epoch(model, loader, criterion, optimizer, scheduler, device, phase):
 ```
 def train(model, loaders, criterion, optimizer, num_epochs, device, scheduler=None):
 
+  best_val_loss = float('inf')
+  best_val_acc = 0
+  # best_model = None
+
   accuracy_dic, loss_dic = {}, {}
   loss_dic['train'], loss_dic['validation'] = [], []
   accuracy_dic['train'], accuracy_dic['validation'] = [], []
@@ -143,9 +147,9 @@ def train(model, loaders, criterion, optimizer, num_epochs, device, scheduler=No
 
       wandb.log({"Train Loss": train_loss, "Train Accuracy":train_acc, "Validation Loss": val_loss, "Validation Accuracy":val_acc})
 
-      if valid_loss < best_valid_loss:
-        best_valid_acc = valid_acc
-        best_valid_loss = valid_loss
+      if val_loss < best_val_loss:
+        best_val_acc = val_acc
+        best_val_loss = val_loss
         # best_model = model.state_dict()
         torch.save(model.state_dict(), model_path)
 
