@@ -203,7 +203,7 @@ def report(model, loader, device, classes):
 
 ## Interpretability (GradCam)
 ```
-from pytorch_grad_cam import GradCAM, HiResCAM, ScoreCAM, GradCAMPlusPlus, AblationCAM, XGradCAM, EigenCAM, FullGrad
+from pytorch_grad_cam import GradCAM, HiResCAM, GradCAMElementWise, GradCAMPlusPlus, XGradCAM, AblationCAM, ScoreCAM, EigenCAM, EigenGradCAM, LayerCAM, FullGrad
 from pytorch_grad_cam.utils.model_targets import ClassifierOutputTarget
 from pytorch_grad_cam.utils.image import show_cam_on_image
 from torchvision.transforms.functional import to_pil_image
@@ -243,11 +243,11 @@ def plot_GradCam(model, image):
     return grayscale_cam, visualization
 ```
 ```
-k=10
-indicies = np.random.choice(len(datasets['train']), k)
+k=15
+indicies = np.random.choice(len(datasets['test']), k)
 np.random.shuffle(indicies)
 
-fig,axs = plt.subplots(2,5, figsize=(15,7))
+fig,axs = plt.subplots(k//5,5, figsize=(18,10))
 idx=0
 
 for i, ax in enumerate(axs.flatten()):
