@@ -167,9 +167,9 @@ def train(model, loaders, criterion, optimizer, num_epochs, device, scheduler=No
 
 ## Confusion Matrix
 ```
-def plot_confusionmatrix(y_train_pred,y_train, classes):
+def plot_confusionmatrix(y_pred, y_true, classes):
   print('Confusion matrix')
-  cf = sklearn.metrics.confusion_matrix(y_train_pred,y_train)
+  cf = sklearn.metrics.confusion_matrix(y_pred, y_true, labels=np.arange(len(classes)))
   sns.heatmap(cf,annot=True,yticklabels=classes, xticklabels=classes, cmap='Blues', fmt='g')
   plt.tight_layout()
   plt.show()
