@@ -165,6 +165,14 @@ def train(model, loaders, criterion, optimizer, num_epochs, device, scheduler=No
   return loss_dic, accuracy_dic
 ```
 
+## Save and Load Model
+```
+torch.save(model.state_dict(), model_path)
+```
+```
+model.load_state_dict(torch.load(model_path))
+```
+
 ## Confusion Matrix
 ```
 def plot_confusionmatrix(y_pred, y_true, classes):
