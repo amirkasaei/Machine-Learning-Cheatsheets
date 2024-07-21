@@ -1,5 +1,11 @@
 # Meachine-Learning-Cheatsheet-Codes
 
+## Setup GPU Torch
+```
+import torch
+DEVICE = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+```
+
 ## Mount Google Drive
 ```
 from google.colab import drive
