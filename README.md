@@ -275,3 +275,11 @@ for i, ax in enumerate(axs.flatten()):
 plt.tight_layout()
 plt.show()
 ```
+
+
+## Add System Path
+
+```
+import sys
+sys.path.append('/content/PATH/')
+```
